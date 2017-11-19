@@ -1,0 +1,22 @@
+# $Id: oss.md5cat.rte.template,v 1.3 2012/05/15 04:07:48 gonter Exp $
+Package Name: oss.md5cat
+Package VRMF: 1.0.0.2
+Update: N
+Fileset
+  Fileset Name: oss.md5cat.rte
+  Fileset VRMF: 1.0.0.2
+  Fileset Description: MD5 catalog tools
+  Bosboot required: N
+  License agreement acceptance required: N
+  Include license files in this package: N
+  Requisites: 
+  USRFiles
+    /usr/local/bin/checksum
+    /usr/local/bin/chkmd5.pl
+    /usr/local/bin/cmp2md5.pl
+    /usr/local/bin/xmd5.pl
+  EOUSRFiles
+  ROOT Part: N
+  ROOTFiles
+  EOROOTFiles
+EOFileset

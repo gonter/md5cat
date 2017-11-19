@@ -1,0 +1,62 @@
+$Id: README,v 1.3 2000/01/31 00:50:14 gonter Exp $
+
+The Perl scripts in this directory are used to maintain a file catalog
+in a directory tree.
+
+Contents:
+
+chkmd5.pl   Maintain a checksum catalog in the current directory.
+	    This currently requires the external program "checksum"
+	    to actuall calculate checksums.
+
+cmp2md5.pl  compares two checksum catalogs and does various things.
+
+checksum    C program to calculate MD5 checksums;  this program
+	    with it's supporting library functions can be found in
+	    the module "checksum"
+
+Examples:
+1. generate the checksum in a writable directory tree:
+   chkmd5.pl
+
+2. generate the checksum in a read-only directory tree, e.g. CD-ROM:
+   chkmd5.pl -cat /archive/catalogs/cdrom-0001.cat -tmp /tmp
+
+3. remove duplicate files:
+   cmp2md5.pl -discard -double _catalog
+
+4. verify if all files from the target catalog are in a reference
+   catalog:
+   cmp2md5.pl -verify -ref /archive/catalogs/cdrom-0001.cat \
+     -targ _catalog
+
+5. remove all files from the target filesystem, when that file's
+   checksum was found in the reference catalog and in the target:
+   cmp2md5.pl -discard -ref /archive/catalogs/cdrom-0001.cat \
+     -targ _catalog
+
+Notes:
+-verify does not complain about TRANS.TBL
+
+Format of the catalog:
+
+The catalog currently consists of lines in this format:
+28c3532ce28488b35e5b474f400bfaf1 file     8433 chkmd5.pl
+
+Each line contains four fields:
+1. the MD5 checksum string
+2. the entry type, currently there is only 'file'
+3. the file size
+4. the file's name
+
+Things to do:
+chkmd5.pl
++ Option -catalog should also imply -tmp unless otherwise specified.
+  This is handy for taking the catalog of a read-only filesystem,
+  e.g. a CD-ROM.
+
+cmp2md5.pl
++ needs an option that explizitly lists all files that were not
+  found in the reference catalog
+
+
