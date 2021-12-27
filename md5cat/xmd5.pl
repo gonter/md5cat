@@ -38,6 +38,39 @@ use strict;
 use Data::Dumper;
 $Data::Dumper::Indent= 1;
 
+my $doit= 0;
+my $quiet= 0;
+my @PARS;
+my $arg;
+while (defined ($arg= shift (@ARGV)))
+{
+     if ($arg eq '--') { push (@PARS, @ARGV); @ARGV= (); }
+  elsif ($arg eq '-') { push (@PARS, '-'); }
+  elsif ($arg =~ /^--(.+)/)
+  {
+    my ($opt, $val)= split ('=', $1, 2);
+       if ($opt eq 'help') { usage(); }
+    elsif ($opt eq 'doit') { $doit= 1; }
+    elsif ($opt eq 'quiet') { $quiet= 1; }
+    else { usage(); }
+  }
+  elsif ($arg =~ /^-(.+)/)
+  {
+    foreach my $opt (split ('', $1))
+    {
+         if ($opt eq 'h') { usage(); exit (0); }
+#     elsif ($opt eq 'x') { $x_flag= 1; }
+      elsif ($opt eq 'q') { $quiet= 1; }
+      else { usage(); }
+    }
+  }
+  else
+  {
+    push (@PARS, $arg);
+  }
+}
+
+
 my %MSIZE= {};
 
 my $FC= new FCAT;
@@ -182,8 +215,16 @@ print join (' ', '#', __LINE__, %$fc_m), "\n";
     my $p;
     foreach $p (@x_paths)
     {
-      print "rm '$p'\n";
-      print "ln '$p1' '$p'\n";
+      unless ($quiet)
+      {
+        print "rm '$p'\n";
+        print "ln '$p1' '$p'\n";
+      }
+      if ($doit)
+      {
+        system ('rm', $p);
+        system ('ln', $p1, $p);
+      }
     }
   }
   $tsize;
