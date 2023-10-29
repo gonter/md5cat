@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 # $Id: xmd5.pl,v 1.3 2012/10/11 18:53:33 gonter Exp $
 
 =head1 NAME
@@ -32,8 +32,6 @@ Also, single quotes in filenames are a problem.
 =cut
 
 use strict;
-
-# use lib '/root/work/perl';
 
 use Data::Dumper;
 $Data::Dumper::Indent= 1;

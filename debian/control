@@ -1,10 +1,10 @@
 Package: md5cat-perl
-Version: 0.1-1
+Version: 0.2-1
 Architecture: all
 Maintainer: Gerhard Gonter <ggonter@gmail.com>
 Original-Maintainer: Gerhard Gonter <ggonter@gmail.com>
 Installed-Size: 629
-Depends: perl, libjson-perl, libjson-xs-perl
+Depends: perl, forge001-perl, libdigest-md5-file-perl
 Section: perl
 Priority: optional
 Homepage: tbd

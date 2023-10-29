@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 # FILE md5cat/chkmd5.pl
 #
 # update a md5 catalog
@@ -25,19 +25,13 @@ use strict;
 use Data::Dumper;
 $Data::Dumper::Indent= 1;
 
-BEGIN {
-  my @p= split ('/', $0);
-  pop (@p);
-  unshift (@INC, join ('/', @p));
-}
+use Digest::MD5::File;
 
 use md5cat;
 
 # configuration
 my $chk_new_files= 0;
 my $checksum;
-
-use Digest::MD5::File;
 
 =begin comment
 

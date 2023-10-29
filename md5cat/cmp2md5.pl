@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 # FILE %gg/bin/cmp2md5.pl
 #
 # check if all files in listing 1 also appear in listing 2
@@ -47,12 +47,24 @@ my $move_dest= undef;   # destination directory for moves
 my ($arg);
 ARGUMENT: while (defined ($arg= shift (@ARGV)))
 {
-  if ($arg =~ /^-/)
+  if ($arg =~ /^--(.+)/)
+  {
+    my ($opt, $val)= split ('=', $1, 2);
+       if ($opt eq 'compact')  { $is_compact= 1;       }
+    elsif ($opt eq 'discard')  { $remove_doubles= 1; $move_dest= undef; }
+    elsif ($opt eq 'move')     { $move_dest= shift (@ARGV); $remove_doubles= 0; }
+    elsif ($opt eq 'double')   { $show_double_ref= 1;  }
+    elsif ($opt eq 'missing')  { $show_missing= 1;     }
+    elsif ($arg eq 'silent')   { $show_missing= $silent= 1; $show_doubles= 0; }
+    elsif ($arg eq 'verify')   { $verify= $show_missing= $silent= 1; $show_doubles= 0; }
+    else { usage(); }
+  }
+  elsif ($arg =~ /^-/)
   {
     if ($arg =~ /^-listref/ || $arg =~ /^-reflist/)
     {
       $is_ref= 1;
-      &read_reference_list (shift (@ARGV));
+      read_reference_list (shift (@ARGV));
     }
     elsif ($arg =~ /^-ref/)     { $is_ref= 1;           }
     elsif ($arg =~ /^-targ/)    { $is_ref= 0;           }
@@ -61,27 +73,19 @@ ARGUMENT: while (defined ($arg= shift (@ARGV)))
     elsif ($arg eq '-move')     { $move_dest= shift (@ARGV); $remove_doubles= 0; }
     elsif ($arg eq '-double')   { $show_double_ref= 1;  }
     elsif ($arg eq '-missing')  { $show_missing= 1;     }
-    elsif ($arg eq '-silent')
-    {
-      $show_missing= $silent= 1;
-      $show_doubles= 0;
-    }
-    elsif ($arg eq '-verify')
-    {
-      $verify= $show_missing= $silent= 1;
-      $show_doubles= 0;
-    }
+    elsif ($arg eq '-silent')   { $show_missing= $silent= 1; $show_doubles= 0; }
+    elsif ($arg eq '-verify')   { $verify= $show_missing= $silent= 1; $show_doubles= 0; }
     elsif ($arg =~ /^-mins/)    { $min_size= shift (@ARGV); }
     elsif ($arg =~ /^-mks(l|ym)/)     { $make_symlink= 1;     }
     else
     {
-      &usage;
+      usage();
       exit (0);
     }
     next ARGUMENT;
   }
 
-  &read_table ($arg, $is_ref);
+  read_table ($arg, $is_ref);
 }
 
 my $md5;

@@ -6,8 +6,12 @@ version=`awk '/Version:/ {print $2}' debian/control`
 pkgdir=tmp/$pkgname/$epoch/$version
 bindir=$pkgdir/data/usr/bin
 
-pmlnk.pm --copy --target $pkgdir/data/usr/share/perl5 .
-mkdir $pkgdir/control
+# md5cat/md5cat.pm conflicts with the one installed via forge001-perl
+# which is identical, so do not copy it but pull forge001-perl in as
+# a dependency.
+# pmlnk.pm --copy --target $pkgdir/data/usr/share/perl5 .
+
+mkdir -p $pkgdir/control
 cp debian/control $pkgdir/control
 echo '2.0' > $pkgdir/debian-binary
 
