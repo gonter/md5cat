@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # $Id: xmd5.pl,v 1.3 2012/10/11 18:53:33 gonter Exp $
+# latest update: 2025-10-21 18:55
 
 =head1 NAME
 
@@ -38,6 +39,7 @@ $Data::Dumper::Indent= 1;
 
 my $doit= 0;
 my $quiet= 0;
+my $q= "'"; # use single quotes for shell script output unless specified otherwise
 my @PARS;
 my $arg;
 while (defined ($arg= shift (@ARGV)))
@@ -50,6 +52,8 @@ while (defined ($arg= shift (@ARGV)))
        if ($opt eq 'help') { usage(); }
     elsif ($opt eq 'doit') { $doit= 1; }
     elsif ($opt eq 'quiet') { $quiet= 1; }
+    elsif ($opt eq 'single' || $opt eq 'sq') { $q= "'" }
+    elsif ($opt eq 'double' || $opt eq 'dq') { $q= '"' }
     else { usage(); }
   }
   elsif ($arg =~ /^-(.+)/)
@@ -59,6 +63,8 @@ while (defined ($arg= shift (@ARGV)))
          if ($opt eq 'h') { usage(); exit (0); }
 #     elsif ($opt eq 'x') { $x_flag= 1; }
       elsif ($opt eq 'q') { $quiet= 1; }
+      elsif ($opt eq "'") { $q= "'" }
+      elsif ($opt eq '"') { $q= '"' }
       else { usage(); }
     }
   }
@@ -215,8 +221,8 @@ print join (' ', '#', __LINE__, %$fc_m), "\n";
     {
       unless ($quiet)
       {
-        print "rm '$p'\n";
-        print "ln '$p1' '$p'\n";
+        print "rm $q$p$q\n";
+        print "ln $q$p1$q $q$p$q\n";
       }
       if ($doit)
       {
